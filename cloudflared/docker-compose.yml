@@ -1,0 +1,17 @@
+services:
+  # El Agente del Túnel de Cloudflare
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    hostname: cloudflare02
+    restart: unless-stopped
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN} # Lo manejas por variable en tu archivo .env
+      - TZ=America/Santiago
+    command: tunnel --no-autoupdate run
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
