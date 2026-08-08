@@ -12,4 +12,5 @@ Cada servicio se encuentra aislado en su propia carpeta con su archivo `docker-c
 .
 ├── traefik/            # Reverse Proxy & SSL Automático
 ├── portainer/          # Panel de administración web de Docker
+├── cloudflared/        # Tunel de cloudflare
 └── ...                 # Otros servicios independientes
