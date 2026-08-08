@@ -1,0 +1,43 @@
+# ==========================================
+# Archivos de entorno y credenciales (Secretos)
+# ==========================================
+.env
+*.env
+!.env.example
+
+# Claves SSH, SSL / Certificados locales
+*.pem
+*.key
+*.crt
+*.pfx
+
+# ==========================================
+# Volúmenes y Datos Persistentes de Docker
+# ==========================================
+# Ignora cualquier carpeta típica de almacenamiento local
+**/data/
+**/db/
+**/database/
+**/uploads/
+**/media/
+**/storage/
+**/config/
+
+# Bases de datos y volcados de datos
+*.sqlite
+*.sqlite3
+*.db
+*.sql
+*.sql.gz
+
+# Archivos de Traefik / SSL dinámicos
+**/acme.json
+
+# ==========================================
+# Logs y Archivos Temporales
+# ==========================================
+*.log
+**/logs/
+*.tmp
+*.swp
+.DS_Store

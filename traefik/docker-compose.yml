@@ -1,0 +1,36 @@
+services:
+  traefik:
+    image: traefik:v3.7.6
+    container_name: traefik
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+    # NOTA: Ya no necesitas publicar los puertos 80 y 443 hacia tu router, 
+    # pero puedes dejar el 8080 si quieres ver el dashboard en tu red local.
+    ports:
+      - 80:80
+      - 8080:8080
+    environment:
+      - TZ=America/Santiago
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/traefik.yml:ro
+      - ./dynamic.yml:/dynamic.yml:ro
+      - ./users.txt:/users.txt:ro
+      - logs:/var/log/traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+      - traefik.http.routers.traefik-secure.entrypoints=web # Apunta al entrypoint HTTP (puerto 80 interno)
+      - traefik.http.routers.traefik-secure.rule=Host(`${FQDN}`)
+      - traefik.http.routers.traefik-secure.service=api@internal
+
+volumes:
+  logs: {}
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,30 @@
+services:
+  portainer:
+    image: portainer/portainer-ee:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    environment:
+      - TZ=America/Santiago
+    labels:
+      - "traefik.enable=true"
+      # Configuración del Router HTTP (Web)
+      - "traefik.http.routers.portainer.entrypoints=web"
+      - "traefik.http.routers.portainer.rule=Host(`${DNS}`)" # ⬅️ Cambia por tu subdominio real
+      # Configuración del Servicio (Puerto HTTP interno de Portainer)
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      # Preservar Host original
+      - "traefik.http.routers.portainer.middlewares=portainer-headers"
+      - "traefik.http.middlewares.portainer-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+volumes:
+  portainer_data:
+
+networks:
+  proxy:
+    external: true
